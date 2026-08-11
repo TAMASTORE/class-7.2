@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Games - Kelas 7.2</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Flag Wave -->
+<div class="flag-wave"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>🎮 Games</h2>
+    <button class="sidebar-close" onclick="closeSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a data-page="games" onclick="navigateTo('games')"><i class="fas fa-gamepad"></i> Games</a></li>
+  </ul>
+  <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <a href="/index.html" style="color: #b0b0b0; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+      <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+    </a>
+  </div>
+</nav>
+
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <span class="font-bold">🎮 Fun Games</span>
+  </div>
+  <div class="navbar-right">
+    <a href="/index.html" class="text-gray-600 hover:text-red-600 transition">
+      <i class="fas fa-home"></i>
+    </a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+  <section class="page-section active" id="page-games">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-gamepad text-red-600"></i> Fun Games
+    </h2>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all cursor-pointer hover:-translate-y-2 group">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-red-500 to-yellow-500 rounded-2xl flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition">⚽</div>
+        <h4 class="font-bold text-lg">Football 7.2</h4>
+        <p class="text-sm text-gray-400">Segera hadir</p>
+        <div class="mt-3 inline-block px-4 py-1 bg-red-100 text-red-600 text-xs rounded-full font-semibold">Coming Soon</div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all cursor-pointer hover:-translate-y-2 group">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition">♟️</div>
+        <h4 class="font-bold text-lg">Catur Games</h4>
+        <p class="text-sm text-gray-400">Segera hadir</p>
+        <div class="mt-3 inline-block px-4 py-1 bg-red-100 text-red-600 text-xs rounded-full font-semibold">Coming Soon</div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all cursor-pointer hover:-translate-y-2 group">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-green-500 to-teal-500 rounded-2xl flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition">🎯</div>
+        <h4 class="font-bold text-lg">ML Modification</h4>
+        <p class="text-sm text-gray-400">Segera hadir</p>
+        <div class="mt-3 inline-block px-4 py-1 bg-red-100 text-red-600 text-xs rounded-full font-semibold">Coming Soon</div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all cursor-pointer hover:-translate-y-2 group">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition">🏃</div>
+        <h4 class="font-bold text-lg">RPG Run</h4>
+        <p class="text-sm text-gray-400">Segera hadir</p>
+        <div class="mt-3 inline-block px-4 py-1 bg-red-100 text-red-600 text-xs rounded-full font-semibold">Coming Soon</div>
+      </div>
+    </div>
+    
+    <div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+        <i class="fas fa-puzzle-piece text-red-600"></i> Mini Game: Tebak Gambar
+      </h3>
+      <p class="text-gray-500 text-sm mb-4">Tebak gambar berdasarkan petunjuk!</p>
+      
+      <div id="miniGameContainer">
+        <div class="text-center py-8">
+          <div class="text-8xl mb-4" id="emojiDisplay">🐱</div>
+          <p class="text-gray-600" id="hintDisplay">Hewan yang suka mengejar tikus</p>
+          <div class="flex gap-2 justify-center mt-4 flex-wrap">
+            <input type="text" id="answerInput" class="px-4 py-2 border rounded-xl w-48" placeholder="Jawaban..." onkeydown="if(event.key==='Enter') checkAnswer()" />
+            <button onclick="checkAnswer()" class="px-6 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition">
+              <i class="fas fa-check"></i> Jawab
+            </button>
+          </div>
+          <p class="text-sm text-gray-400 mt-2" id="scoreDisplay">Skor: 0</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Toast -->
+<div id="toastContainer"></div>
+
+<script>
+const questions = [
+  { emoji: '🐱', hint: 'Hewan yang suka mengejar tikus', answer: 'kucing' },
+  { emoji: '🐶', hint: 'Hewan yang setia dan suka menggonggong', answer: 'anjing' },
+  { emoji: '🐘', hint: 'Hewan terbesar di darat', answer: 'gajah' },
+  { emoji: '🦒', hint: 'Hewan dengan leher panjang', answer: 'jerapah' },
+  { emoji: '🐧', hint: 'Hewan yang hidup di es', answer: 'pinguin' },
+  { emoji: '🦄', hint: 'Hewan mitologi dengan tanduk', answer: 'unicorn' },
+  { emoji: '🐉', hint: 'Hewan mitologi yang bisa bernapas api', answer: 'naga' },
+  { emoji: '🦁', hint: 'Raja hutan', answer: 'singa' },
+  { emoji: '🐺', hint: 'Hewan yang suka melolong ke bulan', answer: 'serigala' },
+  { emoji: '🦊', hint: 'Hewan yang licik dan pintar', answer: 'rubah' }
+];
+
+let currentQuestion = 0;
+let score = parseInt(localStorage.getItem('gameScore')) || 0;
+
+function loadQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById('emojiDisplay').textContent = q.emoji;
+  document.getElementById('hintDisplay').textContent = q.hint;
+  document.getElementById('answerInput').value = '';
+  document.getElementById('scoreDisplay').textContent = `Skor: ${score}`;
+}
+
+window.checkAnswer = function() {
+  const input = document.getElementById('answerInput').value.trim().toLowerCase();
+  const q = questions[currentQuestion];
+  if (input === q.answer) {
+    score += 10;
+    localStorage.setItem('gameScore', score);
+    toast('✅ Benar! +10 poin 🎉', 'success');
+    currentQuestion = (currentQuestion + 1) % questions.length;
+    loadQuestion();
+  } else {
+    toast(`❌ Salah! Jawabannya: ${q.answer}`, 'error');
+  }
+};
+
+function toast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+window.toggleSidebar = function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('active');
+};
+
+window.closeSidebar = function() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+};
+
+window.navigateTo = function(page) {
+  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  closeSidebar();
+};
+
+document.getElementById('sidebarOverlay')?.addEventListener('click', closeSidebar);
+
+loadQuestion();
+window.toast = toast;
+window.checkAnswer = checkAnswer;
+console.log('🎮 Games Kelas 7.2 siap!');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Album - Kelas 7.2</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Flag Wave -->
+<div class="flag-wave"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>📸 Album Kelas 7.2</h2>
+    <button class="sidebar-close" onclick="closeSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a data-page="album" onclick="navigateTo('album')"><i class="fas fa-images"></i> Album</a></li>
+  </ul>
+  <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <a href="/index.html" style="color: #b0b0b0; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+      <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+    </a>
+  </div>
+</nav>
+
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <span class="font-bold">📸 Album</span>
+  </div>
+  <div class="navbar-right" id="navbarRight">
+    <button class="btn-login" id="loginBtn" onclick="handleLogin()">
+      <i class="fas fa-sign-in-alt"></i> Login
+    </button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+  <section class="page-section active" id="page-album">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-images text-red-600"></i> Album Kelas 7.2
+    </h2>
+    
+    <div id="uploadArea" style="display:none;" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+      <h4 class="font-semibold mb-3">📤 Tambah Foto ke Album</h4>
+      <div class="space-y-3">
+        <input type="text" id="albumFotoUrl" placeholder="Link URL foto..." class="w-full px-4 py-2 border rounded-xl" />
+        <input type="text" id="albumFotoCaption" placeholder="Keterangan (opsional)" class="w-full px-4 py-2 border rounded-xl" />
+        <button onclick="tambahFotoAlbum()" class="w-full py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition">
+          <i class="fas fa-upload"></i> Kirim untuk Verifikasi
+        </button>
+        <p class="text-xs text-gray-400">⚠️ Foto akan diverifikasi oleh admin sebelum ditampilkan</p>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="albumGrid">
+      <div class="col-span-full text-gray-400">Belum ada foto di album</div>
+    </div>
+  </section>
+</main>
+
+<!-- Toast -->
+<div id="toastContainer"></div>
+
+<script type="module">
+import { 
+  auth, database, ref, set, push, onValue, get, 
+  signInWithPopup, googleProvider, onAuthStateChanged, signOut
+} from './firebase-config.js';
+
+let currentUser = null;
+let userName = 'Tamu';
+
+// ============ AUTH ============
+window.handleLogin = function() {
+  if (currentUser) {
+    signOut(auth);
+    currentUser = null;
+    userName = 'Tamu';
+    updateUI();
+    toast('Logout berhasil', 'info');
+  } else {
+    loginWithGoogle();
+  }
+};
+
+async function loginWithGoogle() {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    currentUser = result.user;
+    userName = currentUser.displayName || currentUser.email || 'User';
+    
+    const siswaRef = ref(database, 'siswa');
+    const snap = await get(siswaRef);
+    if (snap.exists()) {
+      const data = snap.val();
+      for (const uid in data) {
+        if (uid === currentUser.uid && data[uid].status === 'siswa') {
+          userName = data[uid].nama || userName;
+          break;
+        }
+      }
+    }
+    
+    updateUI();
+    document.getElementById('uploadArea').style.display = 'block';
+    toast(`✅ Login sebagai ${userName}`, 'success');
+  } catch (error) {
+    toast('Login gagal: ' + error.message, 'error');
+  }
+}
+
+function updateUI() {
+  const btn = document.getElementById('loginBtn');
+  if (currentUser) {
+    btn.innerHTML = `<img src="${currentUser.photoURL || 'https://ui-avatars.com/api/?name='+userName}" class="user-avatar" />`;
+    btn.className = 'btn-login logged-in';
+    document.getElementById('uploadArea').style.display = 'block';
+  } else {
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+    btn.className = 'btn-login';
+    document.getElementById('uploadArea').style.display = 'none';
+  }
+}
+
+// ============ ALBUM ============
+window.tambahFotoAlbum = function() {
+  const url = document.getElementById('albumFotoUrl').value.trim();
+  const caption = document.getElementById('albumFotoCaption').value.trim();
+  
+  if (!url) {
+    toast('Masukkan URL foto!', 'error');
+    return;
+  }
+  if (!currentUser) {
+    toast('Login dulu untuk menambah foto!', 'error');
+    return;
+  }
+  
+  const verifRef = push(ref(database, 'albumVerifikasi'));
+  set(verifRef, {
+    url: url,
+    caption: caption || '',
+    pengirim: userName,
+    uid: currentUser.uid,
+    waktu: new Date().toISOString(),
+    status: 'pending'
+  });
+  
+  document.getElementById('albumFotoUrl').value = '';
+  document.getElementById('albumFotoCaption').value = '';
+  toast('✅ Foto dikirim untuk verifikasi admin!', 'success');
+};
+
+function loadAlbum() {
+  const container = document.getElementById('albumGrid');
+  const albumRef = ref(database, 'album');
+  onValue(albumRef, (snap) => {
+    if (!snap.exists()) {
+      container.innerHTML = '<div class="col-span-full text-gray-400">Belum ada foto di album</div>';
+      return;
+    }
+    const data = snap.val();
+    let html = '';
+    for (const key in data) {
+      const foto = data[key];
+      html += `
+        <div class="group relative bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition">
+          <img src="${foto.url}" class="w-full aspect-square object-cover" />
+          ${foto.caption ? `<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs p-2">${foto.caption}</div>` : ''}
+          <div class="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full">${foto.pengirim || 'Anonim'}</div>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  });
+}
+
+// ============ SIDEBAR ============
+window.toggleSidebar = function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('active');
+};
+
+window.closeSidebar = function() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+};
+
+window.navigateTo = function(page) {
+  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  closeSidebar();
+};
+
+document.getElementById('sidebarOverlay')?.addEventListener('click', closeSidebar);
+
+// ============ TOAST ============
+function toast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+// ============ AUTH STATE ============
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  if (user) {
+    userName = user.displayName || user.email || 'User';
+    const siswaRef = ref(database, 'siswa');
+    const snap = await get(siswaRef);
+    if (snap.exists()) {
+      const data = snap.val();
+      for (const uid in data) {
+        if (uid === user.uid && data[uid].status === 'siswa') {
+          userName = data[uid].nama || userName;
+          break;
+        }
+      }
+    }
+    updateUI();
+  } else {
+    updateUI();
+  }
+});
+
+// ============ INIT ============
+loadAlbum();
+
+const bypassUID = localStorage.getItem('bypassUID');
+const bypassNama = localStorage.getItem('bypassNama');
+if (bypassUID && bypassNama) {
+  userName = bypassNama;
+  currentUser = { uid: bypassUID, displayName: bypassNama };
+  updateUI();
+  loadAlbum();
+  document.getElementById('uploadArea').style.display = 'block';
+  toast(`👤 Login sebagai ${bypassNama} (Bypass)`, 'info');
+}
+
+window.toast = toast;
+window.tambahFotoAlbum = tambahFotoAlbum;
+window.handleLogin = handleLogin;
+
+console.log('📸 Album Kelas 7.2 siap!');
+</script>
+
+</body>
+</html>

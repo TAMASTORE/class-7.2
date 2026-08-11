@@ -1,0 +1,93 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    
+    "siswa": {
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid"
+      }
+    },
+    
+    "profil": {
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid"
+      }
+    },
+    
+    "status": {
+      ".read": true,
+      ".write": "auth !== null",
+      "$statusId": {
+        ".validate": "newData.hasChildren(['teks', 'pengirim', 'waktu'])"
+      }
+    },
+    
+    "chat": {
+      "grup": {
+        ".read": "auth !== null",
+        ".write": "auth !== null"
+      },
+      "private": {
+        "$chatId": {
+          ".read": "auth !== null",
+          ".write": "auth !== null"
+        }
+      }
+    },
+    
+    "notifikasi": {
+      ".read": "auth !== null",
+      ".write": "auth !== null && root.child('admin').child(auth.uid).exists()"
+    },
+    
+    "verifikasi": {
+      ".read": "auth !== null && root.child('admin').child(auth.uid).exists()",
+      ".write": "auth !== null",
+      "$verifId": {
+        ".validate": "newData.hasChildren(['nama', 'noWa', 'uid', 'status'])"
+      }
+    },
+    
+    "album": {
+      ".read": true,
+      ".write": "auth !== null",
+      "$fotoId": {
+        ".validate": "newData.hasChildren(['url', 'uploader', 'waktu'])"
+      }
+    },
+    
+    "albumVerifikasi": {
+      ".read": "auth !== null && root.child('admin').child(auth.uid).exists()",
+      ".write": "auth !== null",
+      "$verifId": {
+        ".validate": "newData.hasChildren(['url', 'pengirim', 'uid', 'status'])"
+      }
+    },
+    
+    "admin": {
+      ".read": "auth !== null",
+      ".write": "auth !== null && root.child('admin').child(auth.uid).child('role').val() === 'utama'"
+    },
+    
+    "pengaturan": {
+      ".read": true,
+      ".write": "auth !== null && root.child('admin').child(auth.uid).exists()"
+    },
+    
+    "saran": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$saranId": {
+        ".validate": "newData.hasChildren(['pesan', 'pengirim', 'waktu'])"
+      }
+    },
+    
+    "event": {
+      ".read": true,
+      ".write": "auth !== null && root.child('admin').child(auth.uid).exists()"
+    }
+  }
+}

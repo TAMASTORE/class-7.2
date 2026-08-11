@@ -1,0 +1,23 @@
+{
+  "name": "Kelas 7.2 - MTS Miftahul Huda",
+  "short_name": "Kelas 7.2",
+  "description": "Website resmi kelas 7.2 MTS Miftahul Huda - Pondok Pesantren Nur Cahaya",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#e74c3c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://ui-avatars.com/api/?name=7.2&background=e74c3c&color=fff&size=192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://ui-avatars.com/api/?name=7.2&background=e74c3c&color=fff&size=512",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
