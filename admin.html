@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin - Kelas 7.2</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Flag Wave -->
+<div class="flag-wave"></div>
+
+<!-- Sidebar Admin -->
+<nav class="sidebar" id="adminSidebar">
+  <div class="sidebar-header">
+    <h2>🛡️ Admin Panel</h2>
+    <button class="sidebar-close" onclick="closeAdminSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a class="active" data-page="dashboard" onclick="navigateAdmin('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+    <li><a data-page="verifikasi" onclick="navigateAdmin('verifikasi')"><i class="fas fa-user-check"></i> Verifikasi MyProfile</a></li>
+    <li><a data-page="album" onclick="navigateAdmin('album')"><i class="fas fa-images"></i> Verifikasi Album</a></li>
+    <li><a data-page="broadcast" onclick="navigateAdmin('broadcast')"><i class="fas fa-bullhorn"></i> Broadcast</a></li>
+    <li><a data-page="bypass" onclick="navigateAdmin('bypass')"><i class="fas fa-key"></i> Bypass Login</a></li>
+    <li><a data-page="tema" onclick="navigateAdmin('tema')"><i class="fas fa-palette"></i> Pengaturan Tema</a></li>
+    <li><a data-page="event" onclick="navigateAdmin('event')"><i class="fas fa-calendar-plus"></i> Pengadaan Event</a></li>
+    <li><a data-page="saran" onclick="navigateAdmin('saran')"><i class="fas fa-comment-dots"></i> Kotak Saran</a></li>
+    <li><a data-page="kelola" onclick="navigateAdmin('kelola')"><i class="fas fa-users-cog"></i> Kelola Akun</a></li>
+    <li><a data-page="kas" onclick="navigateAdmin('kas')"><i class="fas fa-coins"></i> Pengingat Kas</a></li>
+  </ul>
+  <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <button onclick="logoutAdmin()" class="w-full text-left text-red-400 hover:text-red-300 transition flex items-center gap-2 p-2 rounded-lg hover:bg-red-900/20">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </div>
+</nav>
+
+<!-- Overlay -->
+<div class="sidebar-overlay" id="adminOverlay"></div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <button class="menu-toggle" onclick="toggleAdminSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <span class="font-bold text-red-600">🛡️ Admin Panel</span>
+  </div>
+  <div class="navbar-right" id="adminNavRight">
+    <span id="adminName" class="text-sm font-semibold text-gray-700">Admin</span>
+    <img id="adminAvatar" src="https://ui-avatars.com/api/?name=Admin&background=e74c3c&color=fff" class="w-10 h-10 rounded-full border-2 border-red-600" />
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+
+  <!-- Dashboard -->
+  <section class="page-section active" id="page-dashboard">
+    <h2 class="text-2xl font-bold mb-4">📊 Dashboard Admin</h2>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-sm">Total Siswa</p>
+        <p class="text-3xl font-bold text-red-600" id="totalSiswaAdmin">29</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-sm">Verifikasi Pending</p>
+        <p class="text-3xl font-bold text-yellow-500" id="pendingVerif">0</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-sm">Total Status</p>
+        <p class="text-3xl font-bold text-blue-500" id="totalStatus">0</p>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-sm">Pesan Chat</p>
+        <p class="text-3xl font-bold text-green-500" id="totalChat">0</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <h3 class="font-bold text-lg mb-4">📋 Aktivitas Terbaru</h3>
+      <div id="aktivitasList" class="space-y-2">
+        <p class="text-gray-400">Belum ada aktivitas</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verifikasi MyProfile -->
+  <section class="page-section" id="page-verifikasi">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-user-check text-red-600"></i> Verifikasi MyProfile
+    </h2>
+    <div id="verifikasiList" class="space-y-4">
+      <p class="text-gray-400">Tidak ada permintaan verifikasi</p>
+    </div>
+  </section>
+
+  <!-- Verifikasi Album -->
+  <section class="page-section" id="page-album">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-images text-red-600"></i> Verifikasi Album
+    </h2>
+    <div id="albumVerifList" class="space-y-4">
+      <p class="text-gray-400">Tidak ada permintaan penambahan foto</p>
+    </div>
+  </section>
+
+  <!-- Broadcast -->
+  <section class="page-section" id="page-broadcast">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-bullhorn text-red-600"></i> Broadcast Notifikasi
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Target</label>
+          <select id="broadcastTarget" class="w-full px-4 py-2 border rounded-xl">
+            <option value="global">🌍 Global (Semua Siswa)</option>
+            <option value="personal">👤 Personal (Siswa Tertentu)</option>
+          </select>
+        </div>
+        <div id="siswaSelectContainer" style="display:none;">
+          <label class="block text-sm font-semibold mb-1">Pilih Siswa</label>
+          <select id="broadcastSiswa" class="w-full px-4 py-2 border rounded-xl"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Pesan</label>
+          <textarea id="broadcastPesan" rows="4" class="w-full px-4 py-2 border rounded-xl" placeholder="Tulis pesan notifikasi..."></textarea>
+        </div>
+        <button onclick="kirimBroadcast()" class="w-full py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition">
+          <i class="fas fa-paper-plane"></i> Kirim Broadcast
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bypass Login -->
+  <section class="page-section" id="page-bypass">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-key text-red-600"></i> Bypass Login
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <p class="text-gray-500 text-sm mb-4">⚠️ Fitur ini memungkinkan Anda login sebagai siswa tertentu tanpa password.</p>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Pilih Siswa</label>
+          <select id="bypassSiswa" class="w-full px-4 py-2 border rounded-xl"></select>
+        </div>
+        <button onclick="bypassLogin()" class="w-full py-3 bg-yellow-500 text-white rounded-xl font-semibold hover:bg-yellow-600 transition">
+          <i class="fas fa-unlock"></i> Bypass Login
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pengaturan Tema -->
+  <section class="page-section" id="page-tema">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-palette text-red-600"></i> Pengaturan Tema & UI
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Pilih Tema</label>
+          <div class="flex gap-3 flex-wrap">
+            <button onclick="setTema('merahputih')" class="px-6 py-2 bg-gradient-to-r from-red-600 to-red-400 text-white rounded-xl font-semibold hover:shadow-lg transition">🇮🇩 Merah Putih</button>
+            <button onclick="setTema('dark')" class="px-6 py-2 bg-gray-800 text-white rounded-xl font-semibold hover:shadow-lg transition">🌙 Dark</button>
+            <button onclick="setTema('blue')" class="px-6 py-2 bg-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition">💙 Blue</button>
+            <button onclick="setTema('green')" class="px-6 py-2 bg-green-600 text-white rounded-xl font-semibold hover:shadow-lg transition">💚 Green</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Mode Otomatis</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="autoTema" value="manual" checked /> Manual
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="autoTema" value="auto" /> Otomatis
+            </label>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Link Foto Kelas</label>
+          <input type="text" id="fotoKelasLink" class="w-full px-4 py-2 border rounded-xl" placeholder="https://example.com/foto-kelas.jpg" />
+          <button onclick="simpanPengaturan()" class="mt-3 px-6 py-2 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition">
+            <i class="fas fa-save"></i> Simpan Pengaturan
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pengadaan Event -->
+  <section class="page-section" id="page-event">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-calendar-plus text-red-600"></i> Pengadaan Event
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Nama Event</label>
+          <input type="text" id="eventNama" class="w-full px-4 py-2 border rounded-xl" placeholder="Turnamen ML Class 7.2" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Deskripsi Event</label>
+          <textarea id="eventDeskripsi" rows="3" class="w-full px-4 py-2 border rounded-xl" placeholder="Deskripsi event..."></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Tanggal Pelaksanaan</label>
+          <input type="datetime-local" id="eventTanggal" class="w-full px-4 py-2 border rounded-xl" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">File UI Pendaftaran (JSON)</label>
+          <input type="file" id="eventFile" accept=".json" class="w-full px-4 py-2 border rounded-xl" />
+        </div>
+        <button onclick="buatEvent()" class="w-full py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition">
+          <i class="fas fa-plus"></i> Buat Event
+        </button>
+      </div>
+      <div id="eventList" class="mt-6 space-y-2">
+        <p class="text-gray-400">Belum ada event</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kotak Saran -->
+  <section class="page-section" id="page-saran">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-comment-dots text-red-600"></i> Kotak Saran
+    </h2>
+    <div id="saranList" class="space-y-4">
+      <p class="text-gray-400">Belum ada saran</p>
+    </div>
+  </section>
+
+  <!-- Kelola Akun -->
+  <section class="page-section" id="page-kelola">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-users-cog text-red-600"></i> Kelola Akun
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <p class="text-gray-500 text-sm mb-4">Ubah kategori akun dari Tamu menjadi MyProfile atau sebaliknya.</p>
+      <div id="kelolaAkunList" class="space-y-2">
+        <p class="text-gray-400">Memuat data...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pengingat Kas -->
+  <section class="page-section" id="page-kas">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-coins text-red-600"></i> Pengingat Pembayaran Kas
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">Pilih Siswa</label>
+          <select id="kasSiswa" class="w-full px-4 py-2 border rounded-xl"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Pesan</label>
+          <textarea id="kasPesan" rows="3" class="w-full px-4 py-2 border rounded-xl">📢 Reminder Pembayaran Kas Kelas 7.2
+Total: Rp 20.000
+Mohon segera dibayarkan ya! Terima kasih 🙏</textarea>
+        </div>
+        <button onclick="kirimKas()" class="w-full py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition">
+          <i class="fas fa-paper-plane"></i> Kirim Pengingat
+        </button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Toast -->
+<div id="toastContainer"></div>
+
+<script type="module">
+import { 
+  auth, database, ref, get, set, push, onValue, update, remove,
+  signInWithPopup, googleProvider, onAuthStateChanged, signOut
+} from './firebase-config.js';
+
+// ============ DATA ============
+const siswaData = [
+  { no: '01', nama: 'ABDILLAH AKIRA SYADID' },
+  { no: '02', nama: 'ABDUL LATIF' },
+  { no: '03', nama: 'ACHMAD ADELARD BILFAQIH' },
+  { no: '04', nama: 'ACHMAD IKHSAN' },
+  { no: '05', nama: 'ADLIYA DZAHBIAH AZZALEA' },
+  { no: '06', nama: 'AHMAD HAIKAL DZUHRI' },
+  { no: '07', nama: 'ALEEFA LABITSA BILQIS' },
+  { no: '08', nama: 'ANANDA BAHARUDDIN' },
+  { no: '09', nama: 'ANI NAURA IZZATI BACHTIAR' },
+  { no: '10', nama: 'ARZKY WIRAPUTRA PERMANA' },
+  { no: '11', nama: 'ASYADDA TRIPUTRA CLEAREST' },
+  { no: '12', nama: 'AUFA RIZAL RAIS' },
+  { no: '13', nama: 'DENY FIRMANSYAH' },
+  { no: '14', nama: 'DEVI FADHILAH K' },
+  { no: '15', nama: 'DIO ARSYAVIN' },
+  { no: '16', nama: 'FAQIH SETO ASNAWI' },
+  { no: '17', nama: 'FIKKA DEAN SYABAN' },
+  { no: '18', nama: 'KAFI ALHABSY' },
+  { no: '19', nama: 'MEDINA FATHIYAH HANUM MARZUKI' },
+  { no: '20', nama: 'MUHAMMAD IHSAN DANISHWAR' },
+  { no: '21', nama: 'MUHAMMAD NAFUAL SHIDIQI' },
+  { no: '22', nama: 'RAZIQ SHIDIQI AL MANOVI' },
+  { no: '23', nama: 'RENAI SISTHA' },
+  { no: '24', nama: 'SEKAR NUR HASANAH' },
+  { no: '25', nama: 'SYAKIRA LIONA' },
+  { no: '26', nama: 'VANESHA DWI SAPITRI' },
+  { no: '27', nama: 'YUSUF JAFAR SAPUTRA' },
+  { no: '28', nama: 'BANYU ALPRIYAND' },
+  { no: '29', nama: 'BISMA' }
+];
+
+const adminData = [
+  { id: '087636', username: '@AdminUtamaStu10_13', pin: '95Q67PRQSty16-17QPtrg', nama: 'ACHMAD IKHSAN', no: '04', role: 'utama' },
+  { id: '774536', username: '@adminmod_13', pin: 'PZPqRSTPQSt2ip14', nama: 'RENAI SISTHA', no: '23', role: 'moderator' },
+  { id: '876343', username: '@adminmod_14', pin: '><QSPRty95P12StP', nama: 'ASYADDA TRIPUTRA CLEAREST', no: '11', role: 'moderator' },
+  { id: '883675', username: '@idadmin mod_13', pin: '@0134175QPRty', nama: 'DEVI FADHILAH K', no: '14', role: 'moderator' },
+  { id: '937645', username: '@adminmodut_13', pin: '9QStP13141517$SYQ', nama: 'RAZIQ SHIDIQI AL MANOVI', no: '22', role: 'utama' }
+];
+
+let currentAdmin = null;
+let currentUser = null;
+
+// ============ RENDER SELECTS ============
+function renderSiswaSelect(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+  select.innerHTML = '';
+  siswaData.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.no;
+    opt.textContent = `${s.no} - ${s.nama}`;
+    select.appendChild(opt);
+  });
+}
+
+// ============ VERIFIKASI ============
+function renderVerifikasi() {
+  const container = document.getElementById('verifikasiList');
+  const verifRef = ref(database, 'verifikasi');
+  onValue(verifRef, (snap) => {
+    if (!snap.exists()) {
+      container.innerHTML = '<p class="text-gray-400">Tidak ada permintaan verifikasi</p>';
+      return;
+    }
+    const data = snap.val();
+    let html = '';
+    let pending = 0;
+    for (const key in data) {
+      const v = data[key];
+      if (v.status === 'pending') pending++;
+      html += `
+        <div class="bg-white p-4 rounded-xl border ${v.status === 'pending' ? 'border-yellow-300' : 'border-green-300'}">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-bold">${v.nama}</p>
+              <p class="text-sm text-gray-500">No WA: ${v.noWa} ${v.noAbsen ? '• Absen: '+v.noAbsen : ''}</p>
+              <p class="text-xs text-gray-400">UID: ${v.uid?.slice(0,10)}...</p>
+              <p class="text-xs ${v.status === 'pending' ? 'text-yellow-500' : 'text-green-600'}">Status: ${v.status || 'pending'}</p>
+            </div>
+            ${v.status === 'pending' ? `
+              <div class="flex gap-2">
+                <button onclick="verifikasiApprove('${key}')" class="px-4 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">✅ Verifikasi</button>
+                <button onclick="verifikasiReject('${key}')" class="px-4 py-1 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">❌ Tolak</button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+    document.getElementById('pendingVerif').textContent = pending;
+  });
+}
+
+window.verifikasiApprove = async function(key) {
+  const verifRef = ref(database, 'verifikasi/' + key);
+  await update(verifRef, { status: 'approved' });
+  const snap = await get(verifRef);
+  const data = snap.val();
+  if (data && data.uid) {
+    await set(ref(database, 'siswa/' + data.uid), {
+      nama: data.nama,
+      noAbsen: data.noAbsen || '',
+      noWa: data.noWa,
+      status: 'siswa',
+      verified: true
+    });
+    toast('✅ Siswa berhasil diverifikasi!', 'success');
+  }
+};
+
+window.verifikasiReject = async function(key) {
+  await remove(ref(database, 'verifikasi/' + key));
+  toast('❌ Verifikasi ditolak', 'info');
+};
+
+// ============ ALBUM VERIFIKASI ============
+function renderAlbumVerif() {
+  const container = document.getElementById('albumVerifList');
+  const verifRef = ref(database, 'albumVerifikasi');
+  onValue(verifRef, (snap) => {
+    if (!snap.exists()) {
+      container.innerHTML = '<p class="text-gray-400">Tidak ada permintaan penambahan foto</p>';
+      return;
+    }
+    const data = snap.val();
+    let html = '';
+    for (const key in data) {
+      const v = data[key];
+      if (v.status === 'pending') {
+        html += `
+          <div class="bg-white p-4 rounded-xl border border-yellow-300">
+            <div class="flex gap-4">
+              <img src="${v.url}" class="w-24 h-24 object-cover rounded-lg" />
+              <div class="flex-1">
+                <p class="font-bold">${v.pengirim}</p>
+                <p class="text-sm text-gray-500">${v.caption || 'Tidak ada keterangan'}</p>
+                <div class="flex gap-2 mt-2">
+                  <button onclick="albumApprove('${key}')" class="px-4 py-1 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600">✅ Izinkan</button>
+                  <button onclick="albumReject('${key}')" class="px-4 py-1 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">❌ Tolak</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+    container.innerHTML = html || '<p class="text-gray-400">Tidak ada permintaan pending</p>';
+  });
+}
+
+window.albumApprove = async function(key) {
+  const verifRef = ref(database, 'albumVerifikasi/' + key);
+  const snap = await get(verifRef);
+  const data = snap.val();
+  if (data) {
+    await push(ref(database, 'album'), {
+      url: data.url,
+      caption: data.caption || '',
+      pengirim: data.pengirim,
+      waktu: new Date().toISOString()
+    });
+    await update(verifRef, { status: 'approved' });
+    toast('✅ Foto berhasil ditambahkan ke album!', 'success');
+  }
+};
+
+window.albumReject = async function(key) {
+  await remove(ref(database, 'albumVerifikasi/' + key));
+  toast('❌ Foto ditolak', 'info');
+};
+
+// ============ BROADCAST ============
+document.getElementById('broadcastTarget')?.addEventListener('change', function() {
+  document.getElementById('siswaSelectContainer').style.display = this.value === 'personal' ? 'block' : 'none';
+});
+
+window.kirimBroadcast = async function() {
+  const target = document.getElementById('broadcastTarget').value;
+  const pesan = document.getElementById('broadcastPesan').value;
+  if (!pesan) {
+    toast('Isi pesan dulu!', 'error');
+    return;
+  }
+  
+  let targetSiswa = null;
+  if (target === 'personal') {
+    const no = document.getElementById('broadcastSiswa').value;
+    const siswa = siswaData.find(s => s.no === no);
+    targetSiswa = siswa ? siswa.nama : null;
+  }
+  
+  await push(ref(database, 'notifikasi'), {
+    pesan: pesan,
+    pengirim: currentAdmin?.nama || 'Admin',
+    target: target,
+    targetNama: targetSiswa,
+    waktu: new Date().toISOString(),
+    dibaca: false
+  });
+  
+  toast('📢 Broadcast terkirim!', 'success');
+  document.getElementById('broadcastPesan').value = '';
+};
+
+// ============ BYPASS ============
+window.bypassLogin = async function() {
+  const no = document.getElementById('bypassSiswa').value;
+  const siswa = siswaData.find(s => s.no === no);
+  if (!siswa) {
+    toast('Siswa tidak ditemukan', 'error');
+    return;
+  }
+  
+  const siswaRef = ref(database, 'siswa');
+  const snap = await get(siswaRef);
+  if (snap.exists()) {
+    const data = snap.val();
+    for (const uid in data) {
+      if (data[uid].nama === siswa.nama) {
+        localStorage.setItem('bypassUID', uid);
+        localStorage.setItem('bypassNama', siswa.nama);
+        toast(`🔑 Bypass login sebagai ${siswa.nama}`, 'success');
+        setTimeout(() => {
+          window.location.href = '/index.html';
+        }, 1000);
+        return;
+      }
+    }
+  }
+  toast('Siswa belum terdaftar di sistem', 'error');
+};
+
+// ============ EVENT ============
+window.buatEvent = async function() {
+  const nama = document.getElementById('eventNama').value;
+  const deskripsi = document.getElementById('eventDeskripsi').value;
+  const tanggal = document.getElementById('eventTanggal').value;
+  
+  if (!nama || !deskripsi || !tanggal) {
+    toast('Isi semua field!', 'error');
+    return;
+  }
+  
+  await push(ref(database, 'event'), {
+    nama: nama,
+    deskripsi: deskripsi,
+    tanggal: tanggal,
+    dibuat: new Date().toISOString(),
+    pendaftar: []
+  });
+  
+  toast('✅ Event berhasil dibuat!', 'success');
+  document.getElementById('eventNama').value = '';
+  document.getElementById('eventDeskripsi').value = '';
+  document.getElementById('eventTanggal').value = '';
+  loadEvents();
+};
+
+function loadEvents() {
+  const container = document.getElementById('eventList');
+  const eventRef = ref(database, 'event');
+  onValue(eventRef, (snap) => {
+    if (!snap.exists()) {
+      container.innerHTML = '<p class="text-gray-400">Belum ada event</p>';
+      return;
+    }
+    const data = snap.val();
+    let html = '';
+    for (const key in data) {
+      const e = data[key];
+      html += `
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <h4 class="font-bold">${e.nama}</h4>
+          <p class="text-sm text-gray-600">${e.deskripsi}</p>
+          <p class="text-xs text-gray-400">📅 ${e.tanggal}</p>
+          <p class="text-xs text-gray-400">👥 ${e.pendaftar?.length || 0} pendaftar</p>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  });
+}
+
+// ============ SARAN ============
+function loadSaran() {
+  const container = document.getElementById('saranList');
+  const saranRef = ref(database, 'saran');
+  onValue(saranRef, (snap) => {
+    if (!snap.exists()) {
+      container.innerHTML = '<p class="text-gray-400">Belum ada saran</p>';
+      return;
+    }
+    const data = snap.val();
+    let html = '';
+    for (const key in data) {
+      const s = data[key];
+      html += `
+        <div class="bg-white p-4 rounded-xl border border-gray-200">
+          <div class="flex justify-between">
+            <p class="font-semibold">${s.pengirim || 'Anonim'}</p>
+            <span class="text-xs text-gray-400">${new Date(s.waktu).toLocaleString()}</span>
+          </div>
+          <p class="text-gray-700 mt-1">${s.pesan}</p>
+          <div class="mt-2">
+            <textarea id="balasan_${key}" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm" placeholder="Tulis balasan..."></textarea>
+            <button onclick="balasSaran('${key}')" class="mt-1 px-4 py-1 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700">Kirim Balasan</button>
+          </div>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  });
+}
+
+window.balasSaran = async function(key) {
+  const textarea = document.getElementById('balasan_' + key);
+  const pesan = textarea.value;
+  if (!pesan) {
+    toast('Isi balasan dulu!', 'error');
+    return;
+  }
+  
+  await push(ref(database, 'notifikasi'), {
+    pesan: '📩 Balasan saran: ' + pesan,
+    pengirim: 'Admin',
+    target: 'personal',
+    targetNama: 'pengirim_saran_' + key,
+    waktu: new Date().toISOString(),
+    dibaca: false
+  });
+  
+  toast('✅ Balasan terkirim!', 'success');
+  textarea.value = '';
+};
+
+// ============ KELOLA AKUN ============
+function loadKelolaAkun() {
+  const container = document.getElementById('kelolaAkunList');
+  const siswaRef = ref(database, 'siswa');
+  onValue(siswaRef, (snap) => {
+    if (!snap.exists()) {
+      container.innerHTML = '<p class="text-gray-400">Belum ada data siswa</p>';
+      return;
+    }
+    const data = snap.val();
+    let html = '';
+    for (const uid in data) {
+      const s = data[uid];
+      html += `
+        <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-200">
+          <div>
+            <p class="font-semibold">${s.nama}</p>
+            <p class="text-sm text-gray-500">Status: ${s.status || 'tamu'}</p>
+          </div>
+          <button onclick="ubahStatus('${uid}')" class="px-4 py-1 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">
+            Ubah Status
+          </button>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  });
+}
+
+window.ubahStatus = async function(uid) {
+  const refSiswa = ref(database, 'siswa/' + uid);
+  const snap = await get(refSiswa);
+  if (snap.exists()) {
+    const data = snap.val();
+    const statusBaru = data.status === 'siswa' ? 'tamu' : 'siswa';
+    await update(refSiswa, { status: statusBaru });
+    toast(`✅ Status diubah menjadi ${statusBaru}`, 'success');
+  }
+};
+
+// ============ KAS ============
+window.kirimKas = async function() {
+  const no = document.getElementById('kasSiswa').value;
+  const siswa = siswaData.find(s => s.no === no);
+  const pesan = document.getElementById('kasPesan').value;
+  
+  if (!siswa) {
+    toast('Pilih siswa dulu!', 'error');
+    return;
+  }
+  
+  await push(ref(database, 'notifikasi'), {
+    pesan: pesan || '📢 Reminder Pembayaran Kas Kelas 7.2',
+    pengirim: currentAdmin?.nama || 'Admin',
+    target: 'personal',
+    targetNama: siswa.nama,
+    waktu: new Date().toISOString(),
+    dibaca: false,
+    tipe: 'kas'
+  });
+  
+  toast(`💰 Pengingat kas terkirim ke ${siswa.nama}`, 'success');
+};
+
+// ============ TEMA ============
+window.setTema = function(tema) {
+  const root = document.documentElement;
+  const colors = {
+    merahputih: { primary: '#e74c3c', secondary: '#f1c40f' },
+    dark: { primary: '#1a1a2e', secondary: '#16213e' },
+    blue: { primary: '#2980b9', secondary: '#3498db' },
+    green: { primary: '#27ae60', secondary: '#2ecc71' }
+  };
+  
+  const c = colors[tema];
+  if (c) {
+    root.style.setProperty('--primary', c.primary);
+    document.querySelector('.navbar').style.borderColor = c.primary;
+    toast(`🎨 Tema berubah ke ${tema}`, 'success');
+  }
+};
+
+window.simpanPengaturan = async function() {
+  const fotoKelas = document.getElementById('fotoKelasLink').value;
+  await set(ref(database, 'pengaturan'), {
+    fotoKelas: fotoKelas,
+    updated: new Date().toISOString()
+  });
+  toast('✅ Pengaturan disimpan!', 'success');
+};
+
+// ============ ADMIN AUTH ============
+async function loginAdmin(id, pin) {
+  const admin = adminData.find(a => a.id === id && a.pin === pin);
+  if (!admin) {
+    toast('❌ ID atau PIN salah!', 'error');
+    return;
+  }
+  
+  currentAdmin = admin;
+  localStorage.setItem('adminSession', JSON.stringify(admin));
+  document.getElementById('adminName').textContent = admin.nama;
+  document.getElementById('adminAvatar').src = `https://ui-avatars.com/api/?name=${admin.nama}&background=e74c3c&color=fff`;
+  
+  toast(`✅ Login sebagai ${admin.nama} (${admin.role})`, 'success');
+  document.getElementById('adminLoginModal')?.classList.remove('active');
+}
+
+const savedAdmin = localStorage.getItem('adminSession');
+if (savedAdmin) {
+  currentAdmin = JSON.parse(savedAdmin);
+  document.getElementById('adminName').textContent = currentAdmin.nama;
+  document.getElementById('adminAvatar').src = `https://ui-avatars.com/api/?name=${currentAdmin.nama}&background=e74c3c&color=fff`;
+}
+
+// ============ NAVIGATION ============
+window.navigateAdmin = function(page) {
+  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(el => el.classList.remove('active'));
+  document.querySelector(`.sidebar-nav a[data-page="${page}"]`)?.classList.add('active');
+  closeAdminSidebar();
+};
+
+window.toggleAdminSidebar = function() {
+  document.getElementById('adminSidebar').classList.toggle('open');
+  document.getElementById('adminOverlay').classList.toggle('active');
+};
+
+window.closeAdminSidebar = function() {
+  document.getElementById('adminSidebar').classList.remove('open');
+  document.getElementById('adminOverlay').classList.remove('active');
+};
+
+window.logoutAdmin = function() {
+  localStorage.removeItem('adminSession');
+  currentAdmin = null;
+  toast('Logout admin berhasil', 'info');
+  window.location.href = '/index.html';
+};
+
+// ============ TOAST ============
+function toast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+// ============ ADMIN LOGIN MODAL ============
+if (!document.getElementById('adminLoginModal')) {
+  const modal = document.createElement('div');
+  modal.id = 'adminLoginModal';
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-shield-alt text-red-600"></i> Login Admin</h2>
+        <button class="modal-close" onclick="document.getElementById('adminLoginModal').classList.remove('active')">&times;</button>
+      </div>
+      <div class="space-y-4">
+        <input type="text" id="adminId" placeholder="ID Admin" class="w-full px-4 py-2 border rounded-xl" />
+        <input type="password" id="adminPin" placeholder="PIN Admin" class="w-full px-4 py-2 border rounded-xl" />
+        <button onclick="loginAdmin(document.getElementById('adminId').value, document.getElementById('adminPin').value)" class="w-full py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700">
+          <i class="fas fa-sign-in-alt"></i> Login Admin
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  
+  if (!currentAdmin) {
+    setTimeout(() => {
+      document.getElementById('adminLoginModal').classList.add('active');
+    }, 500);
+  }
+}
+
+// ============ INIT ============
+renderSiswaSelect('broadcastSiswa');
+renderSiswaSelect('bypassSiswa');
+renderSiswaSelect('kasSiswa');
+renderVerifikasi();
+renderAlbumVerif();
+loadEvents();
+loadSaran();
+loadKelolaAkun();
+
+window.toast = toast;
+window.loginAdmin = loginAdmin;
+
+console.log('🛡️ Admin Panel Kelas 7.2 siap!');
+</script>
+
+</body>
+</html>
