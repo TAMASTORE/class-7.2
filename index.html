@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kelas 7.2 - MTS Miftahul Huda</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#e74c3c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+<body>
+
+<!-- Flag Wave -->
+<div class="flag-wave"></div>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>📚 Kelas 7.2</h2>
+    <button class="sidebar-close" onclick="closeSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a class="active" data-page="beranda" onclick="navigateTo('beranda')"><i class="fas fa-home"></i> Beranda</a></li>
+    <li><a data-page="siswa" onclick="navigateTo('siswa')"><i class="fas fa-user-graduate"></i> Daftar Siswa</a></li>
+    <li><a data-page="jadwal" onclick="navigateTo('jadwal')"><i class="fas fa-calendar-alt"></i> Jadwal</a></li>
+    <li><a data-page="album" onclick="navigateTo('album')"><i class="fas fa-images"></i> Album</a></li>
+    <li><a data-page="games" onclick="navigateTo('games')"><i class="fas fa-gamepad"></i> Games</a></li>
+    <li><a data-page="chat" onclick="navigateTo('chat')"><i class="fas fa-comment-dots"></i> Chat</a></li>
+    <li><a data-page="notifikasi" onclick="navigateTo('notifikasi')"><i class="fas fa-bell"></i> Notifikasi</a></li>
+    <li><a data-page="about" onclick="navigateTo('about')"><i class="fas fa-info-circle"></i> Tentang</a></li>
+  </ul>
+  
+  <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+    <p style="color: #888; font-size: 0.7rem;">
+      Dibuat oleh <strong style="color: #e74c3c;">Tama Studio</strong> &amp; <strong style="color: #f39c12;">PD Nur Cahaya</strong>
+    </p>
+  </div>
+</nav>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a href="#" class="navbar-brand">
+      <span>🇮🇩</span>
+      <span>Kelas 7.2</span>
+    </a>
+  </div>
+  <div class="navbar-right" id="navbarRight">
+    <button class="btn-login" id="loginBtn" onclick="handleLogin()">
+      <i class="fas fa-sign-in-alt"></i> Login
+    </button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+
+  <!-- Section: Beranda -->
+  <section class="page-section active" id="page-beranda">
+    <div class="hero-section">
+      <div class="flex items-center justify-center gap-4 mb-4">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Logo_HUT_RI_ke-81.png/320px-Logo_HUT_RI_ke-81.png" 
+             alt="HUT RI ke-81" 
+             class="h-16 md:h-24 object-contain"
+             onerror="this.style.display='none'" />
+        <span class="text-4xl md:text-6xl">🇮🇩</span>
+      </div>
+      <h1>Dirgahayu Indonesiaku!</h1>
+      <p>HUT RI ke-81 • Semangat Merah Putih untuk Kelas 7.2</p>
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <span class="number" id="days">00</span>
+          <span class="label">Hari</span>
+        </div>
+        <div class="countdown-item">
+          <span class="number" id="hours">00</span>
+          <span class="label">Jam</span>
+        </div>
+        <div class="countdown-item">
+          <span class="number" id="minutes">00</span>
+          <span class="label">Menit</span>
+        </div>
+        <div class="countdown-item">
+          <span class="number" id="seconds">00</span>
+          <span class="label">Detik</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+        <i class="fas fa-school text-red-600 text-3xl mb-3"></i>
+        <h3 class="font-bold text-lg">MTS Miftahul Huda</h3>
+        <p class="text-gray-500 text-sm">Pondok Pesantren Nur Cahaya</p>
+        <a href="https://miftahulhuda.org/" target="_blank" class="text-red-600 text-sm font-semibold hover:underline">Kunjungi Website →</a>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+        <i class="fas fa-map-pin text-red-600 text-3xl mb-3"></i>
+        <h3 class="font-bold text-lg">Alamat</h3>
+        <p class="text-gray-500 text-sm">Pondok Pesantren Nur Cahaya</p>
+        <a href="https://maps.app.goo.gl/Atu3jW4FH9xQ5dDw5" target="_blank" class="text-red-600 text-sm font-semibold hover:underline">Lihat di Maps →</a>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+        <i class="fas fa-users text-red-600 text-3xl mb-3"></i>
+        <h3 class="font-bold text-lg">Total Siswa</h3>
+        <p class="text-2xl font-bold text-red-600" id="totalSiswa">29</p>
+        <p class="text-gray-500 text-sm">Siswa/i Kelas 7.2</p>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-r from-red-50 to-yellow-50 border border-red-200 rounded-2xl p-6 mb-8 animate-pulse">
+      <div class="flex items-start gap-4">
+        <i class="fas fa-bullhorn text-red-600 text-2xl mt-1"></i>
+        <div>
+          <h4 class="font-bold text-red-700">🇮🇩 Pengumuman HUT RI!</h4>
+          <p class="text-gray-700">Turnamen ML Class 7.2 akan dilaksanakan <strong>16 Agustus 2026</strong>! Daftar sekarang di fitur Event (khusus APK).</p>
+          <p class="text-sm text-gray-500 mt-2">🏆 Juara 1: Rp 100.000 • Syarat daftar: Rp 2.000 (via Renai)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+      <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+        <i class="fas fa-clock text-red-600"></i> Jadwal Hari Ini
+      </h3>
+      <div id="jadwalHariIni" class="text-gray-600">
+        <p class="text-gray-400">Memuat jadwal...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Daftar Siswa -->
+  <section class="page-section" id="page-siswa">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-user-graduate text-red-600"></i> Daftar Siswa/i Kelas 7.2
+    </h2>
+    <div class="student-grid" id="studentGrid">
+      <p class="text-gray-400 col-span-full text-center py-10">📚 Memuat data siswa...</p>
+    </div>
+  </section>
+
+  <!-- Section: Jadwal -->
+  <section class="page-section" id="page-jadwal">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-calendar-alt text-red-600"></i> Jadwal Pelajaran & Piket
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-lg mb-4">📚 Jadwal Pelajaran</h3>
+        <div id="jadwalPelajaran" class="space-y-2">
+          <!-- Diisi oleh JavaScript -->
+          <p class="text-gray-400">Memuat jadwal...</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-lg mb-4">🧹 Jadwal Piket</h3>
+        <div id="jadwalPiket" class="space-y-2">
+          <!-- Diisi oleh JavaScript -->
+          <p class="text-gray-400">Memuat jadwal piket...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Album -->
+  <section class="page-section" id="page-album">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-images text-red-600"></i> Album Kelas 7.2
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="albumGrid">
+      <div class="col-span-full text-gray-400 text-center py-10">📸 Belum ada foto. Login untuk menambahkan!</div>
+    </div>
+  </section>
+
+  <!-- Section: Games -->
+  <section class="page-section" id="page-games">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-gamepad text-red-600"></i> Fun Games
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-2 cursor-pointer">
+        <i class="fas fa-futbol text-4xl text-red-600 mb-2"></i>
+        <h4 class="font-bold">Football 7.2</h4>
+        <p class="text-xs text-gray-400">Segera hadir</p>
+        <span class="inline-block mt-2 px-3 py-1 bg-red-100 text-red-600 text-xs rounded-full">Coming Soon</span>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-2 cursor-pointer">
+        <i class="fas fa-chess text-4xl text-red-600 mb-2"></i>
+        <h4 class="font-bold">Catur Games</h4>
+        <p class="text-xs text-gray-400">Segera hadir</p>
+        <span class="inline-block mt-2 px-3 py-1 bg-red-100 text-red-600 text-xs rounded-full">Coming Soon</span>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-2 cursor-pointer">
+        <i class="fas fa-gamepad text-4xl text-red-600 mb-2"></i>
+        <h4 class="font-bold">ML Modification</h4>
+        <p class="text-xs text-gray-400">Segera hadir</p>
+        <span class="inline-block mt-2 px-3 py-1 bg-red-100 text-red-600 text-xs rounded-full">Coming Soon</span>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-2 cursor-pointer">
+        <i class="fas fa-flag-checkered text-4xl text-red-600 mb-2"></i>
+        <h4 class="font-bold">RPG Run</h4>
+        <p class="text-xs text-gray-400">Segera hadir</p>
+        <span class="inline-block mt-2 px-3 py-1 bg-red-100 text-red-600 text-xs rounded-full">Coming Soon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section: Chat Link -->
+  <section class="page-section" id="page-chat">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-comment-dots text-red-600"></i> Chat
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center">
+      <p class="text-gray-600">💬 Buka halaman chat untuk mengirim pesan ke grup atau private.</p>
+      <a href="chat.html" class="inline-block mt-4 px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition shadow-md hover:shadow-lg">
+        <i class="fas fa-comment-dots"></i> Buka Chat
+      </a>
+    </div>
+  </section>
+
+  <!-- Section: Notifikasi Link -->
+  <section class="page-section" id="page-notifikasi">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-bell text-red-600"></i> Notifikasi
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center">
+      <p class="text-gray-600">🔔 Lihat semua notifikasi dari sistem dan admin.</p>
+      <a href="notifikasi.html" class="inline-block mt-4 px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition shadow-md hover:shadow-lg">
+        <i class="fas fa-bell"></i> Buka Notifikasi
+      </a>
+    </div>
+  </section>
+
+  <!-- Section: About -->
+  <section class="page-section" id="page-about">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-info-circle text-red-600"></i> Tentang Web Ini
+    </h2>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <p class="text-gray-600">Website ini dibuat untuk kelas 7.2 MTS Miftahul Huda.</p>
+      <p class="text-gray-600 mt-2">Dikembangkan oleh <strong class="text-red-600">Tama Studio</strong> &amp; <strong class="text-yellow-600">PD Nur Cahaya</strong>.</p>
+      <div class="mt-4 flex gap-4">
+        <a href="#" class="text-red-600 hover:text-red-800 transition"><i class="fab fa-instagram"></i> @tamastudio</a>
+        <a href="#" class="text-red-600 hover:text-red-800 transition"><i class="fab fa-youtube"></i> Tama Studio</a>
+      </div>
+      <div class="mt-4 pt-4 border-t border-gray-200 flex items-center justify-center gap-4">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Logo_HUT_RI_ke-81.png/320px-Logo_HUT_RI_ke-81.png" 
+             alt="HUT RI ke-81" 
+             class="h-12 object-contain"
+             onerror="this.style.display='none'" />
+        <span class="text-xs text-gray-400">🇮🇩 Dirgahayu Republik Indonesia ke-81</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Modal Login -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2><i class="fas fa-sign-in-alt text-red-600"></i> Login ke Kelas 7.2</h2>
+      <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+    </div>
+    <div id="loginContent">
+      <button onclick="loginWithGoogle()" class="w-full py-3 px-4 bg-white border border-gray-300 rounded-xl font-semibold hover:bg-gray-50 transition flex items-center justify-center gap-3 shadow-sm hover:shadow">
+        <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+        Login dengan Google
+      </button>
+      <p class="text-center text-xs text-gray-400 mt-4">Dengan login, Anda menyetujui syarat & ketentuan</p>
+    </div>
+    <div id="loginVerification" style="display:none;">
+      <p class="text-center text-gray-600">Apakah kamu seorang siswa/i kelas 7.2?</p>
+      <div class="flex gap-4 mt-4">
+        <button onclick="verifikasiSiswa(true)" class="flex-1 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition">Ya, Saya Siswa</button>
+        <button onclick="verifikasiSiswa(false)" class="flex-1 py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition">Tidak</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detail Siswa -->
+<div class="modal" id="detailModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="detailNama">Detail Siswa</h2>
+      <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+    </div>
+    <div id="detailContent">
+      <!-- Diisi JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toastContainer"></div>
+
+<!-- ============ JAVASCRIPT ============ -->
+<script type="module">
+import { 
+  auth, database, ref, get, onValue, set, push, 
+  signInWithPopup, googleProvider, onAuthStateChanged, signOut
+} from './firebase-config.js';
+
+// ============ DATA SISWA ============
+const siswaData = [
+  { no: '01', nama: 'ABDILLAH AKIRA SYADID', gender: 'L', tglLahir: null, cita: null },
+  { no: '02', nama: 'ABDUL LATIF', gender: 'L', tglLahir: null, cita: null },
+  { no: '03', nama: 'ACHMAD ADELARD BILFAQIH', gender: 'L', tglLahir: null, cita: null },
+  { no: '04', nama: 'ACHMAD IKHSAN', gender: 'L', tglLahir: '5 September 2013', cita: 'Pemrogramer App Web & Developer Game' },
+  { no: '05', nama: 'ADLIYA DZAHBIAH AZZALEA', gender: 'P', tglLahir: null, cita: null },
+  { no: '06', nama: 'AHMAD HAIKAL DZUHRI', gender: 'L', tglLahir: '29 Mei 2013', cita: 'Pilot' },
+  { no: '07', nama: 'ALEEFA LABITSA BILQIS', gender: 'P', tglLahir: null, cita: null },
+  { no: '08', nama: 'ANANDA BAHARUDDIN', gender: 'P', tglLahir: null, cita: null },
+  { no: '09', nama: 'ANI NAURA IZZATI BACHTIAR', gender: 'P', tglLahir: null, cita: null },
+  { no: '10', nama: 'ARZKY WIRAPUTRA PERMANA', gender: 'L', tglLahir: '10 Agustus 2013', cita: 'Atlet Sepak Bola' },
+  { no: '11', nama: 'ASYADDA TRIPUTRA CLEAREST', gender: 'L', tglLahir: '27 Februari 2014', cita: 'Gamers' },
+  { no: '12', nama: 'AUFA RIZAL RAIS', gender: 'L', tglLahir: null, cita: null },
+  { no: '13', nama: 'DENY FIRMANSYAH', gender: 'L', tglLahir: null, cita: null },
+  { no: '14', nama: 'DEVI FADHILAH K', gender: 'P', tglLahir: null, cita: null },
+  { no: '15', nama: 'DIO ARSYAVIN', gender: 'L', tglLahir: null, cita: null },
+  { no: '16', nama: 'FAQIH SETO ASNAWI', gender: 'L', tglLahir: null, cita: null },
+  { no: '17', nama: 'FIKKA DEAN SYABAN', gender: 'L', tglLahir: null, cita: null },
+  { no: '18', nama: 'KAFI ALHABSY', gender: 'L', tglLahir: null, cita: null },
+  { no: '19', nama: 'MEDINA FATHIYAH HANUM MARZUKI', gender: 'P', tglLahir: null, cita: null },
+  { no: '20', nama: 'MUHAMMAD IHSAN DANISHWAR', gender: 'L', tglLahir: null, cita: null },
+  { no: '21', nama: 'MUHAMMAD NAFUAL SHIDIQI', gender: 'L', tglLahir: '16 November 2013', cita: 'Dokter Hewan' },
+  { no: '22', nama: 'RAZIQ SHIDIQI AL MANOVI', gender: 'L', tglLahir: null, cita: null },
+  { no: '23', nama: 'RENAI SISTHA', gender: 'P', tglLahir: '23 Februari 2014', cita: 'Dokter' },
+  { no: '24', nama: 'SEKAR NUR HASANAH', gender: 'P', tglLahir: null, cita: null },
+  { no: '25', nama: 'SYAKIRA LIONA', gender: 'P', tglLahir: null, cita: null },
+  { no: '26', nama: 'VANESHA DWI SAPITRI', gender: 'P', tglLahir: null, cita: null },
+  { no: '27', nama: 'YUSUF JAFAR SAPUTRA', gender: 'L', tglLahir: null, cita: null },
+  { no: '28', nama: 'BANYU ALPRIYAND', gender: 'L', tglLahir: '9 September 2013', cita: 'Polisi' },
+  { no: '29', nama: 'BISMA', gender: 'L', tglLahir: null, cita: null }
+];
+
+// ============ JADWAL ============
+const jadwalPiket = {
+  'Senin': ['Adliya', 'Syakira', 'Faqih', 'Haikal', 'Raziq'],
+  'Selasa': ['Medina', 'Renai', 'Abdul Latif', 'Deni', 'Yusuf'],
+  'Rabu': ['Vanesha', 'Sekar', 'Resta', 'Seto', 'Aufa'],
+  'Kamis': ['Naufal', 'Dio', 'Dean', 'Ihsan', 'Banyu Alpryand'],
+  'Jumat': ['Bilqis', 'Naura', 'Adit', 'Ahmad'],
+  'Sabtu': ['Nanda', 'Devi', 'Arziky', 'Kaffi', 'Bisma']
+};
+
+// Jadwal Pelajaran (contoh, nanti bisa diisi dari Firebase)
+const jadwalPelajaran = {
+  'Senin': '📖 Bahasa Indonesia • Matematika • IPA',
+  'Selasa': '📖 Bahasa Inggris • IPS • PKN',
+  'Rabu': '📖 Matematika • Bahasa Indonesia • IPA',
+  'Kamis': '📖 IPS • Bahasa Inggris • Matematika',
+  'Jumat': '📖 PKN • Bahasa Indonesia • Bahasa Inggris',
+  'Sabtu': '📖 IPA • IPS • Matematika'
+};
+
+let currentUser = null;
+
+// ============ RENDER SISWA ============
+function renderSiswa() {
+  const grid = document.getElementById('studentGrid');
+  grid.innerHTML = '';
+  
+  siswaData.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'student-card';
+    const initial = s.nama.split(' ').map(w => w[0]).join('').slice(0, 2);
+    card.innerHTML = `
+      <div class="card-avatar" style="background: linear-gradient(135deg, ${s.gender === 'L' ? '#2c3e50' : '#e84393'}, ${s.gender === 'L' ? '#34495e' : '#fd79a8'});">
+        ${initial}
+      </div>
+      <div class="card-body">
+        <h3>${s.nama}</h3>
+        <div class="absen">No. Absen ${s.no}</div>
+        <div class="motto">${s.cita || '✨ Belum mengisi cita-cita'}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-detail" onclick="showDetail('${s.no}')">
+          <i class="fas fa-eye"></i> Lihat Profile Data Murid
+        </button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+window.showDetail = function(no) {
+  const siswa = siswaData.find(s => s.no === no);
+  if (!siswa) return;
+  
+  const content = document.getElementById('detailContent');
+  content.innerHTML = `
+    <div class="text-center">
+      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-red-500 to-yellow-500 flex items-center justify-center text-3xl font-bold text-white mx-auto mb-4">
+        ${siswa.nama.split(' ').map(w => w[0]).join('').slice(0, 2)}
+      </div>
+      <h3 class="text-xl font-bold">${siswa.nama}</h3>
+      <p class="text-gray-500">No. Absen ${siswa.no}</p>
+      <div class="mt-4 text-left space-y-2">
+        <p><span class="font-semibold">Jenis Kelamin:</span> ${siswa.gender === 'L' ? 'Laki-laki' : 'Perempuan'}</p>
+        <p><span class="font-semibold">Tanggal Lahir:</span> ${siswa.tglLahir || 'Belum diisi'}</p>
+        <p><span class="font-semibold">Cita-cita:</span> ${siswa.cita || 'Belum diisi'}</p>
+        <p><span class="font-semibold">Status:</span> <span class="text-green-600">✅ Aktif</span></p>
+      </div>
+    </div>
+  `;
+  document.getElementById('detailNama').textContent = `📋 ${siswa.nama}`;
+  document.getElementById('detailModal').classList.add('active');
+};
+
+// ============ RENDER JADWAL ============
+function renderJadwalPiket() {
+  const container = document.getElementById('jadwalPiket');
+  const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  let html = '';
+  days.forEach(day => {
+    const names = jadwalPiket[day] || [];
+    html += `
+      <div class="flex justify-between items-center py-2 border-b border-gray-100">
+        <span class="font-bold text-red-600 w-20">${day}</span>
+        <span class="text-gray-700">${names.join(' • ')}</span>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function renderJadwalPelajaran() {
+  const container = document.getElementById('jadwalPelajaran');
+  const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  let html = '';
+  days.forEach(day => {
+    const pelajaran = jadwalPelajaran[day] || '📖 Belum ada jadwal';
+    html += `
+      <div class="flex justify-between items-center py-2 border-b border-gray-100">
+        <span class="font-bold text-blue-600 w-20">${day}</span>
+        <span class="text-gray-700">${pelajaran}</span>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function renderJadwalHariIni() {
+  const container = document.getElementById('jadwalHariIni');
+  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  const today = days[new Date().getDay()];
+  
+  if (today === 'Minggu') {
+    container.innerHTML = '<p class="text-gray-400">📅 Hari Minggu, libur! Santai dulu 😊</p>';
+    return;
+  }
+  
+  const piket = jadwalPiket[today] || [];
+  const pelajaran = jadwalPelajaran[today] || '📖 Belum ada jadwal';
+  container.innerHTML = `
+    <div class="space-y-2">
+      <div class="flex items-center gap-4">
+        <span class="bg-red-600 text-white px-4 py-1 rounded-full text-sm font-bold">${today}</span>
+        <span class="text-gray-600">🧹 Piket: ${piket.join(' • ') || 'Tidak ada'}</span>
+      </div>
+      <div class="text-gray-600 text-sm">
+        📚 ${pelajaran}
+      </div>
+    </div>
+  `;
+}
+
+// ============ AUTH ============
+window.loginWithGoogle = async function() {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    currentUser = result.user;
+    toast('Login berhasil!', 'success');
+    closeModal('loginModal');
+    updateUI();
+    checkVerification();
+  } catch (error) {
+    toast('Login gagal: ' + error.message, 'error');
+  }
+};
+
+window.handleLogin = function() {
+  if (currentUser) {
+    signOut(auth);
+    currentUser = null;
+    updateUI();
+    toast('Logout berhasil', 'info');
+  } else {
+    document.getElementById('loginModal').classList.add('active');
+  }
+};
+
+function checkVerification() {
+  if (currentUser) {
+    document.getElementById('loginContent').style.display = 'none';
+    document.getElementById('loginVerification').style.display = 'block';
+  }
+}
+
+window.verifikasiSiswa = function(isSiswa) {
+  if (isSiswa) {
+    document.getElementById('loginVerification').innerHTML = `
+      <p class="text-gray-600 mb-4">Silakan isi data untuk verifikasi:</p>
+      <div class="space-y-3">
+        <input type="text" id="verifNama" placeholder="Nama lengkap" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-red-400 outline-none" />
+        <input type="text" id="verifNoAbsen" placeholder="No. Absen (opsional)" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-red-400 outline-none" />
+        <input type="text" id="verifNoWa" placeholder="No. WhatsApp untuk dihubungi admin" class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-red-400 outline-none" />
+        <button onclick="kirimVerifikasi()" class="w-full py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition">
+          Kirim Verifikasi
+        </button>
+      </div>
+    `;
+  } else {
+    toast('Anda login sebagai Tamu', 'info');
+    closeModal('loginModal');
+  }
+};
+
+window.kirimVerifikasi = function() {
+  const nama = document.getElementById('verifNama').value;
+  const noAbsen = document.getElementById('verifNoAbsen').value;
+  const noWa = document.getElementById('verifNoWa').value;
+  
+  if (!nama || !noWa) {
+    toast('Mohon isi nama dan no WhatsApp!', 'error');
+    return;
+  }
+  
+  const verifRef = ref(database, 'verifikasi/' + Date.now());
+  set(verifRef, {
+    nama: nama,
+    noAbsen: noAbsen,
+    noWa: noWa,
+    uid: currentUser.uid,
+    email: currentUser.email,
+    status: 'pending',
+    waktu: new Date().toISOString()
+  }).then(() => {
+    toast('✅ Verifikasi dikirim! Tunggu admin merespon di WA.', 'success');
+    closeModal('loginModal');
+  }).catch(err => {
+    toast('Gagal kirim: ' + err.message, 'error');
+  });
+};
+
+// ============ UPDATE UI ============
+function updateUI() {
+  const btn = document.getElementById('loginBtn');
+  if (currentUser) {
+    btn.innerHTML = `<img src="${currentUser.photoURL || 'https://ui-avatars.com/api/?name=User'}" class="user-avatar" />`;
+    btn.className = 'btn-login logged-in';
+  } else {
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+    btn.className = 'btn-login';
+  }
+}
+
+// ============ TOAST ============
+function toast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+// ============ SIDEBAR ============
+window.toggleSidebar = function() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+};
+
+window.closeSidebar = function() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+};
+
+// Close sidebar when clicking overlay
+document.getElementById('sidebarOverlay')?.addEventListener('click', closeSidebar);
+
+// ============ NAVIGASI ============
+window.navigateTo = function(page) {
+  document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(el => el.classList.remove('active'));
+  document.querySelector(`.sidebar-nav a[data-page="${page}"]`)?.classList.add('active');
+  closeSidebar();
+};
+
+// ============ MODAL ============
+window.closeModal = function(id) {
+  document.getElementById(id).classList.remove('active');
+};
+
+// Close modal when clicking overlay
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('active');
+  });
+});
+
+// ============ COUNTDOWN ============
+function updateCountdown() {
+  const target = new Date('2026-08-17T00:00:00').getTime();
+  const now = new Date().getTime();
+  const diff = target - now;
+  
+  if (diff <= 0) {
+    document.getElementById('countdown').innerHTML = '<span class="text-2xl font-bold">🇮🇩 MERDEKA!</span>';
+    return;
+  }
+  
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  
+  document.getElementById('days').textContent = String(days).padStart(2, '0');
+  document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+  document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+}
+
+// ============ ALBUM ============
+function loadAlbum() {
+  const container = document.getElementById('albumGrid');
+  const albumRef = ref(database, 'album');
+  onValue(albumRef, (snap) => {
+    if (!snap.exists()) {
+      container.innerHTML = '<div class="col-span-full text-gray-400 text-center py-10">📸 Belum ada foto di album. Login untuk menambahkan!</div>';
+      return;
+    }
+    const data = snap.val();
+    let html = '';
+    for (const key in data) {
+      const foto = data[key];
+      html += `
+        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition">
+          <img src="${foto.url}" class="w-full aspect-square object-cover" />
+          ${foto.caption ? `<div class="text-xs text-gray-500 p-2">${foto.caption}</div>` : ''}
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  });
+}
+
+// ============ INIT ============
+renderSiswa();
+renderJadwalPiket();
+renderJadwalPelajaran();
+renderJadwalHariIni();
+updateCountdown();
+setInterval(updateCountdown, 1000);
+loadAlbum();
+
+// ============ AUTH STATE ============
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+  updateUI();
+  if (user) {
+    const verifRef = ref(database, 'verifikasi');
+    get(verifRef).then(snap => {
+      if (snap.exists()) {
+        const data = snap.val();
+        let verified = false;
+        for (const key in data) {
+          if (data[key].uid === user.uid && data[key].status === 'approved') {
+            verified = true;
+            break;
+          }
+        }
+        if (!verified) {
+          setTimeout(() => {
+            document.getElementById('loginModal').classList.add('active');
+            checkVerification();
+          }, 500);
+        }
+      }
+    });
+  }
+});
+
+// ============ CHECK BYPASS ============
+const bypassUID = localStorage.getItem('bypassUID');
+const bypassNama = localStorage.getItem('bypassNama');
+if (bypassUID && bypassNama) {
+  currentUser = { uid: bypassUID, displayName: bypassNama };
+  updateUI();
+  toast(`👤 Login sebagai ${bypassNama} (Bypass)`, 'info');
+}
+
+window.toast = toast;
+console.log('🇮🇩 Kelas 7.2 - Dirgahayu Indonesia!');
+console.log('📱 Dibuat oleh Tama Studio & PD Nur Cahaya');
+</script>
+
+</body>
+</html>
